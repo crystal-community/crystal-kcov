@@ -2,6 +2,7 @@
 /lib/
 /bin/
 /.shards/
+/coverage/
 *.dwarf
 
 # Libraries don't need dependency lock

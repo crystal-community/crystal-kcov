@@ -1,8 +1,6 @@
 require "./spec_helper"
 
-describe Crystal::Kcov do
-  # TODO: Write tests
-
+describe "Something" do
   it "works" do
     false.should eq(true)
   end

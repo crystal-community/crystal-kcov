@@ -4,6 +4,18 @@ version: 0.1.0
 authors:
   - Troy Sornson <troy@sornson.io>
 
+targets:
+  crkcov:
+    main: src/crystal-kcov.cr
+
+executables:
+  - crkcov
+
+development_dependencies:
+  ameba:
+    github: crystal-ameba/ameba
+    version: ~> 0.13.0
+
 crystal: 1.2.1
 
 license: MIT
