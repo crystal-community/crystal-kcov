@@ -12,7 +12,7 @@ executables:
   - crkcov
 
 scripts:
-  postinstall: mkdir -p bin && mkdir -p ../../bin && crystal build -o bin/crkcov src/crystal-kcov.cr && cp bin/crckov ../../bin
+  postinstall: make && make bin
 
 development_dependencies:
   ameba:
