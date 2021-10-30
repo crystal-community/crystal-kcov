@@ -11,6 +11,9 @@ targets:
 executables:
   - crkcov
 
+scripts:
+  postinstall: mkdir -p bin && mkdir -p ../../bin && crystal build -o bin/crkcov src/crystal-kcov.cr && cp bin/crckov ../../bin
+
 development_dependencies:
   ameba:
     github: crystal-ameba/ameba

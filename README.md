@@ -2,15 +2,15 @@
 
 Crystal Kcov is a gem that will generate code coverage reports of crystal specs.
 
-This gem acts as a codified version of (this blog post)[https://hannes.kaeufler.net/posts/measuring-code-coverage-in-crystal-with-kcov], and uses the (kcov)[https://github.com/SimonKagstrom/kcov] tool for generating coverage reports of a compiled binary.
+This gem acts as a codified version of [this blog post](https://hannes.kaeufler.net/posts/measuring-code-coverage-in-crystal-with-kcov), and uses the [kcov](https://github.com/SimonKagstrom/kcov) tool for generating coverage reports of a compiled binary.
 
-Consider donating to kcov from their (home page)[https://simonkagstrom.github.io/kcov/].
+Consider donating to kcov from their [home page](https://simonkagstrom.github.io/kcov/).
 
 ## Installation
 
 ### Installing Kcov
 
-This gem assumes that `kcov` command is on the `$PATH`. To install it, you can follow the install directions (here)[https://github.com/SimonKagstrom/kcov/blob/master/INSTALL.md], or if running on ubuntu, you can try running:
+This gem assumes that `kcov` command is on the `$PATH`. To install it, you can follow the install directions [here](https://github.com/SimonKagstrom/kcov/blob/master/INSTALL.md), or if running on ubuntu, you can try running:
 
 ```
 > sudo apt-get cmake make install binutils-dev libcurl4-openssl-dev zlib1g-dev libdw-dev libiberty-dev
