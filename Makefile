@@ -5,7 +5,7 @@ SHARD_BIN ?= ../../bin
 
 build: bin/crkcov
 bin/crkcov:
-	$(SHARDS_BIN) build $(CRFLAGS)
+	$(SHARDS_BIN) build --without-development $(CRFLAGS)
 clean:
 	rm -f ./bin/crkcov ./bin/crkcov.dwarf
 bin: build
