@@ -1,1 +1,5 @@
 require "spec"
+require "json"
+require "../src/coverage.cr"
+require "../src/process_runner.cr"
+require "../src/cli_args.cr"

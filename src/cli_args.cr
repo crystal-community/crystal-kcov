@@ -1,6 +1,25 @@
 require "option_parser"
 
 module CrKcov
+  class State
+    property pwd : String
+    property base : String
+    property runner_file : String
+    property proc_runner : ProcessRunner
+    property exit_code : Int32 = 0
+    property coverage : Coverage?
+    property report = [] of String
+
+    property options : Options
+
+    def initialize(@options, @pwd, @base, @runner_file, @proc_runner)
+    end
+
+    def coverage!
+      coverage.not_nil!
+    end
+  end
+
   class Options
     property kcov_executable : String? = "kcov"
     property kcov_args : String? = nil
@@ -12,6 +31,9 @@ module CrKcov
     property cleanup_coverage : Bool = false
     property fail_under_low : Bool = false
     property fail_under_high : Bool = false
+    property silent : Bool = false
+    property build_only : Bool = false
+    property run_only : Bool = false
     property verbose : Bool = false
 
     def self.parse
@@ -62,6 +84,18 @@ module CrKcov
 
         parser.on "--fail-below-high", "Emits a non-zero exit status if coverage is below the 'high' threshold (default 75%)" do
           options.fail_under_high = true
+        end
+
+        parser.on "--suppress", "Don't emit spec output (still exits with non-zero if specs fail)" do
+          options.silent = true
+        end
+
+        parser.on "--build-only", "Only build the spec binary, skip running" do
+          options.build_only = true
+        end
+
+        parser.on "--run-only", "Only run the spec binary (should only be run after --build-only has run)" do
+          options.run_only = true
         end
 
         parser.on "--verbose", "Output verbose logging" do

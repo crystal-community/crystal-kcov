@@ -1,5 +1,3 @@
-require "csv"
-
 module CrKcov
   class ProcessResponse
     property command : String

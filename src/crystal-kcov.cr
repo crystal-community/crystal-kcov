@@ -1,6 +1,7 @@
-require "./runner"
 require "json"
 require "colorize"
+require "csv"
+require "./runner"
 
 CrKcov::Runner.new.run
 
