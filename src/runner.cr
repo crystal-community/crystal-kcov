@@ -1,4 +1,9 @@
-require "./*"
+require "json"
+require "colorize"
+require "csv"
+require "./cli_args"
+require "./coverage"
+require "./process_runner"
 
 module CrKcov
   class Runner
@@ -23,7 +28,9 @@ module CrKcov
 
       # Output the results of the specs
       puts(resp.output) unless state.options.silent
+      puts(resp.error) unless state.options.silent || resp.error.empty?
       puts(state.report.join("\n")) if state.options.output || state.options.output_json
+      state.proc_runner.run("rm -rf #{state.options.coverage_dir}") if state.options.cleanup_coverage
 
       exit(state.exit_code)
     end
@@ -68,16 +75,16 @@ module CrKcov
         max_file_length = cov.files.map { |f| f.file.size }.max
         cov.files.each do |file|
           file.file = file.file.ljust(max_file_length)
-          state.report << "#{file.file}\t#{file.percent_covered} (#{file.covered_lines} / #{file.total_lines})"
+          state.report << "#{file.file}\t#{file.percent_covered}\t(#{file.covered_lines} / #{file.total_lines})"
         end
         cov.percent_covered = colorize_by_threshold(cov.percent_covered, cov.percent_low, cov.percent_high)
-        state.report << "\nTotal covored: #{cov.percent_covered} (#{cov.covered_lines} / #{cov.total_lines})"
+        state.report << "\nTotal covored:\t#{cov.percent_covered}\t(#{cov.covered_lines} / #{cov.total_lines})"
       end
     end
 
     def colorize_by_threshold(total, low, high)
       return total.colorize.back(:red).to_s if total.to_f < low.to_f
-      return total.colorize.back(:yellow).to_s if total.to_f >= low.to_f && total.to_f < high.to_f
+      return total.colorize.back(:light_yellow).fore(:black).to_s if total.to_f >= low.to_f && total.to_f < high.to_f
       return total.colorize.back(:light_green).fore(:black).to_s if total.to_f >= high.to_f
       total
     end

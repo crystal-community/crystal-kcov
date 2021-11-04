@@ -54,11 +54,11 @@ module CrKcov
           options.executable_args = args
         end
 
-        parser.on "--kcov-executable", "Path to kcov executable to use, if not on PATH" do |path|
+        parser.on "--kcov-executable PATH", "Path to kcov executable to use, if not on PATH" do |path|
           options.kcov_executable = path
         end
 
-        parser.on "--include-override", "Path override for kcovs --include-path. Will implicitly be set to 'src/' already. Use this command to change that" do |override|
+        parser.on "--include-override SRC", "Path override for kcovs --include-path. Will implicitly be set to 'src/' already. Use this command to change that" do |override|
           options.kcov_include_override = override
         end
 
