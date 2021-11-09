@@ -7,32 +7,41 @@ require "./process_runner"
 
 module CrKcov
   class Runner
+    @state : State?
+
     def initialize
     end
 
     def run
-      state = init_state
-
       unless state.options.run_only
-        generate_spec_runner(state)
+        generate_spec_runner
 
         return if state.options.build_only
       end
 
-      resp = run_specs(state)
+      state.proc_runner.run("rm -rf #{state.options.coverage_dir}") if state.options.cleanup_coverage_before
+      resp = run_specs
       state.exit_code = resp.status
 
-      get_latest_coverage(state)
+      get_latest_coverage
 
-      process_coverage(state)
+      process_coverage
 
       # Output the results of the specs
       puts(resp.output) unless state.options.silent
       puts(resp.error) unless state.options.silent || resp.error.empty?
       puts(state.report.join("\n")) if state.options.output || state.options.output_json
-      state.proc_runner.run("rm -rf #{state.options.coverage_dir}") if state.options.cleanup_coverage
+      state.proc_runner.run("rm -rf #{state.options.coverage_dir}") if state.options.cleanup_coverage_after
 
+      finish_with_exit
+    end
+
+    def finish_with_exit
       exit(state.exit_code)
+    end
+
+    def state
+      (@state ||= init_state).not_nil!
     end
 
     def init_state
@@ -54,7 +63,7 @@ module CrKcov
       state
     end
 
-    def process_coverage(state)
+    def process_coverage
       # output 2 if tests pass and test coverage is below the low threshold
       state.exit_code = 2 if state.exit_code == 0 &&
                              state.options.fail_under_low &&
@@ -89,7 +98,7 @@ module CrKcov
       total
     end
 
-    def get_latest_coverage(state)
+    def get_latest_coverage
       latest_name = "#{state.options.coverage_dir}/#{state.base}"
       latest_time = Time.unix(0)
       Dir.children(state.options.coverage_dir).each do |child|
@@ -104,15 +113,15 @@ module CrKcov
       state.coverage = Coverage.from_json(File.open("#{state.options.coverage_dir}/#{latest_name}/coverage.json"))
     end
 
-    def generate_spec_runner(state)
-      create_spec_runner(state)
+    def generate_spec_runner
+      create_spec_runner
       command = "crystal build -o #{state.base} --error-trace #{state.runner_file}"
       resp = state.proc_runner.run(command)
-      resp.abort_if_failed
       File.delete(state.runner_file)
+      resp.abort_if_failed
     end
 
-    def run_specs(state) : ProcessResponse
+    def run_specs : ProcessResponse
       include_path = state.options.kcov_include_override || "#{state.pwd}/src"
       abort("Could not find any executable named #{state.base}, was it built using a previous run of --build-only?") if state.options.run_only && !File.exists?(state.base)
       command = "#{state.options.kcov_executable} --include-path=#{include_path} #{state.options.kcov_args} #{state.options.coverage_dir} #{state.base} #{state.options.executable_args}"
@@ -121,7 +130,7 @@ module CrKcov
       resp
     end
 
-    def create_spec_runner(state)
+    def create_spec_runner
       File.open(state.runner_file, "w") do |file|
         # Colorize.enabled so we still get the terminal colors output
         file.puts("require \"./spec/**\"

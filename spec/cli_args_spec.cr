@@ -12,7 +12,8 @@ describe CrKcov::Options do
         "--include-override", "notsrc",
         "--output",
         "--output-json",
-        "--cleanup-coverage",
+        "--cleanup-coverage-before",
+        "--cleanup-coverage-after",
         "--coverage-dir", "MYDIR",
         "--fail-below-low",
         "--fail-below-high",
@@ -34,7 +35,8 @@ describe CrKcov::Options do
       options.kcov_include_override.should eq "notsrc"
       options.output.should eq true
       options.output_json.should eq true
-      options.cleanup_coverage.should eq true
+      options.cleanup_coverage_before.should eq true
+      options.cleanup_coverage_after.should eq true
       options.coverage_dir.should eq "MYDIR"
       options.fail_under_low.should eq true
       options.fail_under_high.should eq true

@@ -28,7 +28,8 @@ module CrKcov
     property executable_args : String? = nil
     property output : Bool = false
     property output_json : Bool = false
-    property cleanup_coverage : Bool = false
+    property cleanup_coverage_after : Bool = false
+    property cleanup_coverage_before : Bool = false
     property fail_under_low : Bool = false
     property fail_under_high : Bool = false
     property silent : Bool = false
@@ -70,8 +71,12 @@ module CrKcov
           options.output_json = true
         end
 
-        parser.on "--cleanup-coverage", "Delete the coverage directory at the end of running. Useful when paired with --output or --output-json to maintain a clean directory" do
-          options.cleanup_coverage = true
+        parser.on "--cleanup-coverage-after", "Delete the coverage directory at the end of running. Useful when paired with --output or --output-json to maintain a clean directory" do
+          options.cleanup_coverage_after = true
+        end
+
+        parser.on "--cleanup-coverage-before", "Delete the coverage directory before running. Useful to make sure only latest report exists" do
+          options.cleanup_coverage_before = true
         end
 
         parser.on "--coverage-dir DIRECTORY", "The name of the output coverage directory, defaults to 'coverage'" do |dir|
