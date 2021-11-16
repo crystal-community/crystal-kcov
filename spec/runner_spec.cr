@@ -5,7 +5,7 @@ describe CrKcov::Runner do
     state = CrKcov::Runner.new.state
 
     state.options.coverage_dir.should eq "coverage"
-    state.base.should eq "crystal-kcov"
+    state.base.should match /crystal-kcov-\d{8}-\d{6}/
     state.runner_file.should contain "crkcov-"
   end
 

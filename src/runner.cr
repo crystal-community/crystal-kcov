@@ -54,7 +54,7 @@ module CrKcov
       end
 
       pwd = Dir.current
-      base = File.basename(pwd)
+      base = "#{File.basename(pwd)}-#{Time.local.to_s("%Y%m%d")}-#{Time.local.to_s("%H%M%S")}"
       runner_file = File.tempname("crkcov", ".cr", dir: pwd)
 
       proc_runner = ProcessRunner.new(options)
