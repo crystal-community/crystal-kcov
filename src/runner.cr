@@ -89,7 +89,7 @@ module CrKcov
           end
         end
         cov.percent_covered = colorize_by_threshold(cov.percent_covered, cov.percent_low, cov.percent_high)
-        state.report << "\nTotal covored:\t#{cov.percent_covered}\t(#{cov.covered_lines} / #{cov.total_lines})"
+        state.report << "Covered #{cov.files.size} files\nTotal covored:\t#{cov.percent_covered}\t(#{cov.covered_lines} / #{cov.total_lines})"
       end
     end
 

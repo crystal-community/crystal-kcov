@@ -215,7 +215,7 @@ describe CrKcov::Runner do
 
       inst.process_coverage
 
-      state.report.should eq ["", "some_file\t\e[30;102m100.00\e[0m\t(2 / 5)", "\nTotal covored:\t\e[30;103m50\e[0m\t(0 / 0)"]
+      state.report.should eq ["", "some_file\t\e[30;102m100.00\e[0m\t(2 / 5)", "Covered 1 files\nTotal covored:\t\e[30;103m50\e[0m\t(0 / 0)"]
     end
   end
 
