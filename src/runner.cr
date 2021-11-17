@@ -77,14 +77,16 @@ module CrKcov
       if state.options.output
         state.report << ""
         cov = state.coverage!
-        cov.files.each do |file|
-          file.file = file.file.gsub(state.pwd, "")
-          file.percent_covered = colorize_by_threshold(file.percent_covered, cov.percent_low, cov.percent_high)
-        end
-        max_file_length = cov.files.map { |f| f.file.size }.max
-        cov.files.each do |file|
-          file.file = file.file.ljust(max_file_length)
-          state.report << "#{file.file}\t#{file.percent_covered}\t(#{file.covered_lines} / #{file.total_lines})"
+        if cov.files.size > 0
+          cov.files.each do |file|
+            file.file = file.file.gsub(state.pwd, "")
+            file.percent_covered = colorize_by_threshold(file.percent_covered, cov.percent_low, cov.percent_high)
+          end
+          max_file_length = cov.files.map { |f| f.file.size }.max
+          cov.files.each do |file|
+            file.file = file.file.ljust(max_file_length)
+            state.report << "#{file.file}\t#{file.percent_covered}\t(#{file.covered_lines} / #{file.total_lines})"
+          end
         end
         cov.percent_covered = colorize_by_threshold(cov.percent_covered, cov.percent_low, cov.percent_high)
         state.report << "\nTotal covored:\t#{cov.percent_covered}\t(#{cov.covered_lines} / #{cov.total_lines})"
@@ -110,7 +112,9 @@ module CrKcov
           end
         end
       end
+      puts "Reading coverage from #{state.options.coverage_dir}/#{latest_name}/coverage.json" if state.options.output
       state.coverage = Coverage.from_json(File.open("#{state.options.coverage_dir}/#{latest_name}/coverage.json"))
+      puts "Coverage:\n#{state.coverage.to_json}" if state.options.output
     end
 
     def generate_spec_runner
