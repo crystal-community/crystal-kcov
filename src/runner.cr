@@ -112,9 +112,9 @@ module CrKcov
           end
         end
       end
-      puts "Reading coverage from #{state.options.coverage_dir}/#{latest_name}/coverage.json" if state.options.output
+      puts "Reading coverage from #{state.options.coverage_dir}/#{latest_name}/coverage.json" if state.options.verbose
       state.coverage = Coverage.from_json(File.open("#{state.options.coverage_dir}/#{latest_name}/coverage.json"))
-      puts "Coverage:\n#{state.coverage.to_json}" if state.options.output
+      puts "Coverage:\n#{state.coverage.to_json}" if state.options.verbose
     end
 
     def generate_spec_runner
