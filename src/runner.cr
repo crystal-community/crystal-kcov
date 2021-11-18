@@ -83,7 +83,7 @@ module CrKcov
             file.percent_covered = colorize_by_threshold(file.percent_covered, cov.percent_low, cov.percent_high)
           end
           max_file_length = cov.files.map { |f| f.file.size }.max
-          cov.files.each do |file|
+          cov.files.sort_by(&.file).each do |file|
             file.file = file.file.ljust(max_file_length)
             state.report << "#{file.file}\t#{file.percent_covered}\t(#{file.covered_lines} / #{file.total_lines})"
           end
