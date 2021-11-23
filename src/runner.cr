@@ -30,7 +30,8 @@ module CrKcov
       # Output the results of the specs
       puts(resp.output) unless state.options.silent
       puts(resp.error) unless state.options.silent || resp.error.empty?
-      puts(state.report.join("\n")) if state.options.output || state.options.output_json
+      # Only output the report if there were no failed tests (otherwise coverage report pushes failures off the screen)
+      puts(state.report.join("\n")) if (state.options.output || state.options.output_json) && resp.status == 0
       state.proc_runner.run("rm -rf #{state.options.coverage_dir}") if state.options.cleanup_coverage_after
 
       finish_with_exit
