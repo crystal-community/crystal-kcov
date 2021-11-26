@@ -24,7 +24,7 @@ module CrKcov
       command = CSV.parse(cmd.strip.gsub(/\s+/, ' '), ' ')[0]
       puts("Running command:\n#{command.join(" ")}") if @options.verbose
       resp = Process.run(command[0], command[1..-1], shell: true) do |proc|
-        ProcessResponse.new(command.join(" "), output: proc.output.gets_to_end, error: proc.error.gets_to_end)
+        ProcessResponse.new(command.join(" "), error: proc.error.gets_to_end, output: proc.output.gets_to_end)
       end
       resp.status = $?.exit_code
       resp
