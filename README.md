@@ -35,15 +35,30 @@ The last command will place the generated `kcov` binary into `/usr/local/bin`, b
 
 2. Run `shards install`
 
-## Usage
+## Usage / Help
 
 NOTE: Command line arguments are liable to change. I chose silly names and didn't give them much thought.
 
 ```
-> ./bin/crkcov -h # get usage info
-> ./bin/crkcov --output # Runs tests, generates coverage report under `coverage` by default
-> ./bin/crkcov --kcov-args '--limits=75,90' # pass arguments to kcov command, this one sets low and high limits to 75% and 90%, respctively
-> ./bin/crkcov --fail-below-low # runs tests and outputs non-zero exit code if coverage is below low threshold
+> ./bin/crkcov -h
+Usage: ./bin/crkcov [args]
+-h, --help                       Show this message
+--kcov-args ARGS                 Arguments to be passed to kcov
+--executable-args ARGS           Arguments to be passed to executable
+--build-args ARGS                Arguments to be passed to crystal as it's compiling (i.e. compiler args could be here)
+--kcov-executable PATH           Path to kcov executable to use, if not on PATH
+--include-override SRC           Path override for kcovs --include-path. Will implicitly be set to 'src/' already. Use this command to change that
+--output                         Outputs the basic results of the coverage tests to terminal
+--output-json                    Outputs the generated coverage json file to stdout
+--cleanup-coverage-after         Delete the coverage directory at the end of running. Useful when paired with --output or --output-json to maintain a clean directory
+--cleanup-coverage-before        Delete the coverage directory before running. Useful to make sure only latest report exists
+--coverage-dir DIRECTORY         The name of the output coverage directory, defaults to 'coverage'
+--fail-below-low                 Emits a non-zero exit status if coverage is below the 'low' threshold (default 25%)
+--fail-below-high                Emits a non-zero exit status if coverage is below the 'high' threshold (default 75%)
+--suppress                       Don't emit spec output (still exits with non-zero if specs fail)
+--build-only                     Only build the spec binary, skip running
+--run-only                       Only run the spec binary (should only be run after --build-only has run)
+--verbose                        Output verbose logging
 ```
 
 ## Contributing

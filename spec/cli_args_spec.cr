@@ -9,6 +9,7 @@ describe CrKcov::Options do
         "--kcov-args", "arg1, arg2, arg3",
         "--executable-args", "arg4, arg5, arg6",
         "--kcov-executable", "RUNME",
+        "--build-args", "compiler_arg",
         "--include-override", "notsrc",
         "--output",
         "--output-json",
@@ -31,6 +32,7 @@ describe CrKcov::Options do
 
       options.kcov_args.should eq "arg1, arg2, arg3"
       options.executable_args.should eq "arg4, arg5, arg6"
+      options.crystal_build_args.should eq "compiler_arg"
       options.kcov_executable.should eq "RUNME"
       options.kcov_include_override.should eq "notsrc"
       options.output.should eq true

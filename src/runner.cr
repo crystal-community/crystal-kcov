@@ -120,7 +120,7 @@ module CrKcov
 
     def generate_spec_runner
       create_spec_runner
-      command = "crystal build -o #{state.base} --error-trace #{state.runner_file}"
+      command = "crystal build #{state.options.crystal_build_args} -o #{state.base} --error-trace #{state.runner_file}"
       resp = state.proc_runner.run(command)
       File.delete(state.runner_file)
       resp.abort_if_failed

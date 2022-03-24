@@ -23,6 +23,7 @@ module CrKcov
   class Options
     property kcov_executable : String? = "kcov"
     property kcov_args : String? = nil
+    property crystal_build_args : String? = nil
     property kcov_include_override : String? = nil
     property coverage_dir : String = "coverage"
     property executable_args : String? = nil
@@ -53,6 +54,10 @@ module CrKcov
 
         parser.on "--executable-args ARGS", "Arguments to be passed to executable" do |args|
           options.executable_args = args
+        end
+
+        parser.on "--build-args ARGS", "Arguments to be passed to crystal as it's compiling (i.e. compiler args could be here)" do |args|
+          options.crystal_build_args = args
         end
 
         parser.on "--kcov-executable PATH", "Path to kcov executable to use, if not on PATH" do |path|
