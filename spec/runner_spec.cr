@@ -75,6 +75,39 @@ describe CrKcov::Runner do
       resp = inst.run_specs
       resp.command.should start_with "not-really-kcov --include-path"
       resp.command.should end_with " --runme coverage runs_specs --metoo"
+      resp.output.should eq ""
+      resp.error.should eq ""
+    ensure
+      File.file_exists.clear
+    end
+  end
+
+  it "runs specs silently" do
+    Process.expect_output("not-really-kcov", "success!", "error!", 0)
+
+    set_argv_and_run([
+      "--run-only",
+      "--kcov-executable",
+      "not-really-kcov",
+      "--kcov-args",
+      "--runme",
+      "--executable-args",
+      "--metoo",
+    ]) do
+      inst = CrKcov::Runner.new
+      state = inst.state
+      state.base = "runs_specs"
+      state.options.silent = true
+      File.file_exists << "runs_specs"
+
+      resp = inst.run_specs
+      resp.command.should start_with "not-really-kcov --include-path"
+      resp.command.should end_with " --runme coverage runs_specs --metoo"
+
+      # Because we're running in "silent" mode, the spec output is still captured in the output, rather
+      # than piped to STDOUT / STDERR (and so the output and error fields are non-empty)
+      resp.output.should eq "success!"
+      resp.error.should eq "error!"
     ensure
       File.file_exists.clear
     end

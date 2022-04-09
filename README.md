@@ -45,7 +45,7 @@ Usage: ./bin/crkcov [args]
 -h, --help                       Show this message
 --kcov-args ARGS                 Arguments to be passed to kcov
 --executable-args ARGS           Arguments to be passed to executable
---build-args ARGS                Arguments to be passed to crystal as it's compiling (i.e. compiler args could be here)
+--build-args ARGS                Arguments to be passed to crystal as it's compiling the specs (i.e. compiler args could be here)
 --kcov-executable PATH           Path to kcov executable to use, if not on PATH
 --include-override SRC           Path override for kcovs --include-path. Will implicitly be set to 'src/' already. Use this command to change that
 --output                         Outputs the basic results of the coverage tests to terminal

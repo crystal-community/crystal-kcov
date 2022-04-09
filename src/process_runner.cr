@@ -19,12 +19,20 @@ module CrKcov
     def initialize(@options : CrKcov::Options)
     end
 
-    def run(cmd : String)
+    def run(cmd : String, specs : Bool = false)
       # use CSV library to handle "things in quotes"
       command = CSV.parse(cmd.strip.gsub(/\s+/, ' '), ' ')[0]
       puts("Running command:\n#{command.join(" ")}") if @options.verbose
-      resp = Process.run(command[0], command[1..-1], shell: true) do |proc|
-        ProcessResponse.new(command.join(" "), error: proc.error.gets_to_end, output: proc.output.gets_to_end)
+      # If we're running the specs directly and NOT running in silent mode, send the normal spec output
+      # to STDOUT and STDERR directly instead of having us manage it in the runner class.
+      send_to_std = specs && !@options.silent
+      resp = Process.run(command[0], command[1..-1], shell: true,
+        output: (send_to_std ? STDOUT : Process::Redirect::Pipe),
+        error: (send_to_std ? STDERR : Process::Redirect::Pipe)) do |proc|
+        ProcessResponse.new(
+          command.join(" "),
+          error: (send_to_std ? "" : proc.error.gets_to_end),
+          output: (send_to_std ? "" : proc.output.gets_to_end))
       end
       resp.status = $?.exit_code
       resp

@@ -27,9 +27,6 @@ module CrKcov
 
       process_coverage
 
-      # Output the results of the specs
-      puts(resp.output) unless state.options.silent
-      puts(resp.error) unless state.options.silent || resp.error.empty?
       # Only output the report if there were no failed tests (otherwise coverage report pushes failures off the screen)
       puts(state.report.join("\n")) if (state.options.output || state.options.output_json) && resp.status == 0
       state.proc_runner.run("rm -rf #{state.options.coverage_dir}") if state.options.cleanup_coverage_after
@@ -130,7 +127,7 @@ module CrKcov
       include_path = state.options.kcov_include_override || "#{state.pwd}/src"
       abort("Could not find any executable named #{state.base}, was it built using a previous run of --build-only?") if state.options.run_only && !File.exists?(state.base)
       command = "#{state.options.kcov_executable} --include-path=#{include_path} #{state.options.kcov_args} #{state.options.coverage_dir} #{state.base} #{state.options.executable_args}"
-      resp = state.proc_runner.run(command)
+      resp = state.proc_runner.run(command, specs: true)
       File.delete(state.base) unless state.options.run_only
       resp
     end
