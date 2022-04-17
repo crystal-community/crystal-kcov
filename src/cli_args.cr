@@ -37,6 +37,7 @@ module CrKcov
     property build_only : Bool = false
     property run_only : Bool = false
     property verbose : Bool = false
+    property name : String? = nil
 
     def self.parse
       options = Options.new
@@ -106,6 +107,10 @@ module CrKcov
 
         parser.on "--run-only", "Only run the spec binary (should only be run after --build-only has run)" do
           options.run_only = true
+        end
+
+        parser.on "--name NAME", "Optional name for the executable (will show up in coverage HTML)" do |name|
+          options.name = name
         end
 
         parser.on "--verbose", "Output verbose logging" do

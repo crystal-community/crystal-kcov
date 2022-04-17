@@ -58,6 +58,7 @@ Usage: ./bin/crkcov [args]
 --suppress                       Don't emit spec output (still exits with non-zero if specs fail)
 --build-only                     Only build the spec binary, skip running
 --run-only                       Only run the spec binary (should only be run after --build-only has run)
+--name NAME                      Optional name for the executable (will show up in coverage HTML)
 --verbose                        Output verbose logging
 ```
 

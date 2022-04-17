@@ -9,6 +9,13 @@ describe CrKcov::Runner do
     state.runner_file.should contain "crkcov-"
   end
 
+  it "Sets name of executable to passed in arg" do
+    set_argv_and_run(["--name", "myname"]) do
+      state = CrKcov::Runner.new.state
+      state.base.should eq "myname"
+    end
+  end
+
   it "negates build_only and run_only" do
     set_argv_and_run(["--build-only"]) do
       state = CrKcov::Runner.new.state
